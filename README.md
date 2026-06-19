@@ -39,6 +39,41 @@ The model handles three distinct fuel types:
 
 ---
 
+## Vehicle Types
+To be added later.
+
+# Notation
+
+## Indices and Sets
+
+| Symbol | Description |
+|---|---|
+| v<sub>1</sub>, ⋯, V | set of vehicles in the transportation fleet. |
+| k<sub>1</sub>, ⋯, K | set of compartments within a vehicle. |
+| f<sub>1</sub>, ⋯, F | set of fuel types. |
+| c<sub>1</sub>, ⋯, C | set of customers. |
+| t<sub>1</sub>, ⋯, T | set of terminals. |
+| j | generic index for a node, where a node is either a terminal or a customer location. |
+
+## Parameters
+
+| Symbol | Description |
+|---|---|
+| Qcap<sub>v,k</sub> | capacity of compartment k in vehicle v. |
+| AC<sub>f,v</sub> | alternative capacity available for fuel f in vehicle v. |
+| Qd<sub>f,c</sub> | quantity of fuel f demanded by customer c. |
+| TQd<sub>f</sub> | total demanded quantity of fuel f across all customers. |
+| EA<sub>j</sub> | earliest acceptable arrival time at node j. |
+| LA<sub>j</sub> | latest acceptable arrival time at node j. |
+
+## Variables
+
+| Symbol | Description |
+|---|---|
+| Ql<sub>k,f,v</sub> | quantity of fuel f loaded into compartment k of vehicle v. |
+| δ<sub>f,k,v</sub> | binary variable; equals 1 if fuel f is filled in compartment k of vehicle v, 0 otherwise. |
+| N<sub>v</sub> | number of vehicles of type v used in a trip (instances: nv<sub>1</sub>, nv<sub>2</sub>, nv<sub>3</sub>, nv<sub>4</sub>, nv<sub>5</sub> for v<sub>1</sub>, ⋯, v<sub>5</sub>). |
+| TA<sub>v,j</sub> | arrival time of vehicle v at node j. |
 ## Constraints
 
 To be added later... 
