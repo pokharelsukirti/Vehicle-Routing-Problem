@@ -1,3 +1,22 @@
+
+
+
+# Vehicle-Routing-Problem # Heterogeneous Capacitated Vehicle Routing Problem (HCVRP) ## Fuel Distribution Model --- ## Overview The **Heterogeneous Capacitated Vehicle Routing Problem (HCVRP)** is an operations research model used to optimize the routing of a fleet of vehicles with varying cap
+
+pasted
+
+
+1. search for any logical mistakes in this, any redundant constraints, any gap in the constraints or if two constraints that should be conneced arent connected. and briefly explain each of themathematical constraints so I can read this explanation alongside the document and it makes understanding easy, clear and simple.
+
+
+You are out of free messages until 8:05 PM
+You’ve hit your limit for Claude messages. Limits will reset at 8:05 PM. For higher limits, explore our Pro plan.
+
+Pasted content
+25.31 KB •309 lines
+•
+Formatting may be inconsistent from source
+
 # Vehicle-Routing-Problem
 # Heterogeneous Capacitated Vehicle Routing Problem (HCVRP)
 ## Fuel Distribution Model
@@ -16,7 +35,7 @@ The **Heterogeneous Capacitated Vehicle Routing Problem (HCVRP)** is an operatio
 6. **Split Delivery** — A customer's demand for a fuel may be met by more than one compartment or vehicle, provided every contributing compartment is fuel-compatible. This works both ways: one compartment may serve several customers, and one customer's order may be filled by several different compartments, possibly on different vehicles.
 7. **Compartment Fuel-Identity Lock, With Top-Up** — A compartment's assigned fuel is fixed for the entire day; it cannot switch fuels mid-day. It can, however, be topped up — a later terminal stop may add more of that same fuel to a partially-delivered compartment.
 8. **Customers** — A customer is never revisited by the same vehicle on the same day, and never serves as a route's start or end. Only depots and terminals can be route endpoints.
-9. **Depot** — A depot never stocks fuel and is never revisited mid-route; a vehicle uses a depot at most once as its start and at most once as its end, per day. Using a depot, at either end, carries no fixed cost. Ending a route at a terminal instead does carry one ($FT_t$).
+9. **Depot** — A depot never stocks fuel and is never an intermediate stop; a vehicle uses a depot at most once as its start and at most once as its end, per day. Consequently, arcs from a terminal (or customer) back to a depot mid-route are infeasible — a depot can only be reached as the route's final destination. Using a depot as an endpoint carries no fixed cost. Ending a route at a terminal instead does carry one ($FT_t$).
 
 ---
 ## Vehicle Types
@@ -40,7 +59,7 @@ Each vehicle type $v$ carries its own: compartment set $K_v$ (so the *number* of
 | $\mathcal N := C\cup\hat T$ | customer and terminal-visit-slot nodes — the nodes that get a "visited" indicator $z$ and a subtour-elimination value $u$ |
 | $j,j'$ | generic node indices, ranging over $\mathcal N\cup D$ unless stated otherwise |
 | $i \in I_v = \{1,\dots,m_v\}$ | physical vehicle instances of type $v$ |
-| $(j,j') \in A,\ A\subseteq(\mathcal N\cup D)\times(\mathcal N\cup D)$ | feasible arcs. Depot-to-depot and depot-to-customer arcs are excluded — a vehicle can't deliver before loading, and never travels directly between two depots. |
+| $(j,j') \in A,\ A\subseteq(\mathcal N\cup D)\times(\mathcal N\cup D)$ | feasible arcs. Depot-to-depot, depot-to-customer, and terminal-to-depot arcs are excluded. A vehicle can't deliver before loading; it never travels directly between two depots; and once it departs from a terminal it either continues to a customer or another terminal — returning to a depot mid-route is impossible since a depot is only ever a route's start or end, never an intermediate stop (Presumption 9). |
 
 > $Dist_{(t,p),(t,p')}=0$ for any $p,p'$ of the same terminal — different slots of one terminal are the same physical place.
 
@@ -301,7 +320,7 @@ Things that would **not** stay linear if added later: a running cost that depend
 9. **Slot-visit-order matching slot number is not required for correctness, only optionally for solver speed.** $Lc$ and $TA$ both propagate along actual arcs, not slot labels, so nothing breaks if the solver's internal numbering of "1st vs 2nd visit" doesn't match real-world intuition. Adding $u_{v,i,(t,p)} > u_{v,i,(t,p-1)}$ as an extra symmetry-breaking constraint is optional, not required, and was left out to keep the model minimal.
 10. **Driver cost uses pure travel time, not total elapsed time.** $Cd_v$ is multiplied by $\sum\tau^v_{jj'}x_{v,i,jj'}$ — moving time only, excluding however long the vehicle dwells at any stop. This is a deliberate reading of "time travelled"; if driver pay should instead cover the whole day including dwell time, the driver-cost term would need to use the same elapsed-time expression as C17 instead.
 11. **C6 redundancy.** As currently defined, $AC_{f,v}$ is just the sum of the per-compartment caps already in C5, so C6 adds nothing unless $AC_{f,v}$ is set independently tighter (e.g. a weight-based de-rating).
-12. **$TQd_f$** remains a definition for reporting/sanity-checks, not an independent constraint. 
+12. **$TQd_f$** remains a definition for reporting/sanity-checks, not an independent constraint.
 
 ---
 # Not Yet Modeled
