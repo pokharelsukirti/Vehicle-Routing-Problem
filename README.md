@@ -301,7 +301,7 @@ Things that would **not** stay linear if added later: a running cost that depend
 9. **Slot-visit-order matching slot number is not required for correctness, only optionally for solver speed.** $Lc$ and $TA$ both propagate along actual arcs, not slot labels, so nothing breaks if the solver's internal numbering of "1st vs 2nd visit" doesn't match real-world intuition. Adding $u_{v,i,(t,p)} > u_{v,i,(t,p-1)}$ as an extra symmetry-breaking constraint is optional, not required, and was left out to keep the model minimal.
 10. **Driver cost uses pure travel time, not total elapsed time.** $Cd_v$ is multiplied by $\sum\tau^v_{jj'}x_{v,i,jj'}$ — moving time only, excluding however long the vehicle dwells at any stop. This is a deliberate reading of "time travelled"; if driver pay should instead cover the whole day including dwell time, the driver-cost term would need to use the same elapsed-time expression as C17 instead.
 11. **C6 redundancy.** As currently defined, $AC_{f,v}$ is just the sum of the per-compartment caps already in C5, so C6 adds nothing unless $AC_{f,v}$ is set independently tighter (e.g. a weight-based de-rating).
-12. **$TQd_f$** remains a definition for reporting/sanity-checks, not an independent constraint.
+12. **$TQd_f$** remains a definition for reporting/sanity-checks, not an independent constraint. 
 
 ---
 # Not Yet Modeled
