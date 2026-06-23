@@ -135,7 +135,7 @@ Each compartment is assigned at most one fuel for the whole day.
 ### C4 — Cumulative Load Propagation
 
 $$
-Lc_{k,f,v,i,j'} \\geq\Lc_{k,f,v,i,j} + \Theta_{k,f,v,i,j'} - M\bigl(1-x_{v,i,jj'}\bigr) \qquad \forall\,(j,j')\in A,\ \forall\,k\in K_v,\ \forall\,f\in F,\ \forall\,v\in V,\ \forall\,i\in I_v
+Lc_{k,f,v,i,j'} \geq Lc_{k,f,v,i,j} + \Theta_{k,f,v,i,j'} - M\bigl(1-x_{v,i,jj'}\bigr) \qquad \forall\,(j,j')\in A,\ \forall\,k\in K_v,\ \forall\,f\in F,\ \forall\,v\in V,\ \forall\,i\in I_v
 $$
 
 $$
