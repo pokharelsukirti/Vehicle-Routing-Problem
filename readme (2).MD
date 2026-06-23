@@ -108,7 +108,7 @@ Total cost is driving cost, plus the fuel actually purchased, plus the driver's 
 ### C1 — Demand Satisfaction
 
 $$
-\sum_{v\in V}\sum_{i\in I_v}\sum_{k\in K_v} q_{c,k,f,v,i} \;=\; Qd_{f,c} \qquad \forall\, c\in C,\ \forall\, f\in F
+\sum_{v\in V}\sum_{i\in I_v}\sum_{k\in K_v} q_{c,k,f,v,i} \=\ Qd_{f,c} \qquad \forall\, c\in C,\ \forall\, f\in F
 $$
 
 The fuel a customer receives, added up across every vehicle, every instance of that vehicle, and every compartment that visits them, equals exactly what they ordered.
