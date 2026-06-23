@@ -106,177 +106,229 @@ Total cost is driving cost, plus the fuel actually purchased, plus the driver's 
 # Constraints
 
 ### C1 — Demand Satisfaction
+
 $$
 \sum_{v\in V}\sum_{i\in I_v}\sum_{k\in K_v} q_{c,k,f,v,i} \;=\; Qd_{f,c} \qquad \forall\, c\in C,\ \forall\, f\in F
 $$
+
 The fuel a customer receives, added up across every vehicle, every instance of that vehicle, and every compartment that visits them, equals exactly what they ordered.
 **Purpose:** guarantees every customer's order is fully met, without requiring any single vehicle or compartment to cover the whole thing — this is what makes split delivery possible.
 
 ### C2 — Compartment–Fuel Compatibility
+
 $$
 \delta_{f,k,v,i} \leq \Delta_{f,k,v} \qquad \forall\, f\in F,\ \forall\, k\in K_v,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 A compartment can only be assigned a fuel it was physically built to carry.
 **Purpose:** stops the model from loading a fuel into a compartment that isn't engineered for it.
 
 ### C3 — Single Fuel per Compartment per Day
+
 $$
 \sum_{f\in F} \delta_{f,k,v,i} \leq 1 \qquad \forall\, k\in K_v,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 Each compartment is assigned at most one fuel for the whole day.
 **Purpose:** enforces the no-mixing rule — a compartment can be topped up with more of its fuel, but never switched to a different one mid-day.
 
 ### C4 — Cumulative Load Propagation
+
 $$
 Lc_{k,f,v,i,j'} \;\geq\; Lc_{k,f,v,i,j} + \Theta_{k,f,v,i,j'} - M\bigl(1-x_{v,i,jj'}\bigr) \qquad \forall\,(j,j')\in A,\ \forall\,k\in K_v,\ \forall\,f\in F,\ \forall\,v\in V,\ \forall\,i\in I_v
 $$
+
 $$
 \text{where } \Theta_{k,f,v,i,j'} = \begin{cases} Ql_{k,f,v,i,(t,p)} & j'=(t,p)\in\hat T \\ -\,q_{c,k,f,v,i} & j'=c\in C \\ 0 & j'=d\in D \end{cases}
 $$
+
 $$
 Lc_{k,f,v,i,d} = 0 \qquad \forall\, d\in D,\ \forall\, k\in K_v,\ \forall\, f\in F,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 As the vehicle moves along its route, a compartment's running fuel level rises by whatever is loaded at a terminal stop, falls by whatever is delivered at a customer stop, and is fixed at exactly zero at any depot (depots never carry fuel).
 **Purpose:** tracks what's physically in each compartment at every point in the route, which is what makes partial deliveries and topping up possible to represent correctly.
 
 ### C5 — Per-Compartment Running Capacity
+
 $$
 0 \;\leq\; Lc_{k,f,v,i,j} \;\leq\; Qcap_{v,k}\cdot\delta_{f,k,v,i} \qquad \forall\, j\in\mathcal N,\ \forall\, k\in K_v,\ \forall\, f\in F,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 At every point along the route, a compartment's fuel level stays between empty and its physical capacity.
 **Purpose:** prevents overfilling a compartment, and the lower bound automatically prevents delivering more than what's currently inside it.
 
 ### C6 — Aggregate Vehicle Running Capacity per Fuel
+
 $$
 \sum_{k\in K_v} Lc_{k,f,v,i,j} \;\leq\; AC_{f,v} \qquad \forall\, j\in\mathcal N,\ \forall\, f\in F,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 Across all of a vehicle's compatible compartments combined, the running total of a given fuel never exceeds the vehicle's aggregate capacity for it.
 **Purpose:** a secondary cap on top of the per-compartment one, useful only if the vehicle's overall carrying capacity for a fuel is set independently of the simple compartment sum (e.g. a weight limit).
 
 ### C7 — Load–Delivery Balance
+
 $$
 \sum_{t\in T}\sum_{p=1}^{P} Ql_{k,f,v,i,(t,p)} \;=\; \sum_{c\in C} q_{c,k,f,v,i} \qquad \forall\, k\in K_v,\ \forall\, f\in F,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 Total loaded across every terminal stop equals total delivered across every customer stop, for that compartment, for the day.
 **Purpose:** ensures everything loaded into a compartment across the whole day is fully accounted for by deliveries.
 
 ### C8 — Visit–Delivery Linking
+
 $$
 q_{c,k,f,v,i} \;\leq\; M\cdot z_{v,i,c} \qquad \forall\, c\in C,\ \forall\, k\in K_v,\ \forall\, f\in F,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 A customer can only receive fuel if the vehicle actually visits them.
 **Purpose:** blocks deliveries to customers who aren't on the route.
 
 ### C9 — Flow Conservation: Customers
+
 $$
 \sum_{j'} x_{v,i,c,j'} \;=\; \sum_{j'} x_{v,i,j',c} \;=\; z_{v,i,c} \qquad \forall\, c\in C,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 A visited customer has exactly one arc in and one arc out; an unvisited one has none.
 **Purpose:** makes sure the route passes cleanly through each customer it serves, with no dangling or duplicated stops.
 
 ### C10 — Flow Conservation & Route Endpoints
+
 $$
 \sum_{j'} x_{v,i,j',(t,p)} \;=\; z_{v,i,(t,p)} - \xi^{o}_{v,i,t}\cdot[p{=}1] \qquad \forall\, t\in T,\ p=1,\dots,P,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 $$
 \sum_{j'} x_{v,i,(t,p),j'} \;=\; z_{v,i,(t,p)} - \xi^{d}_{v,i,(t,p)} \qquad \forall\, t\in T,\ p=1,\dots,P,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 $$
 \sum_{j'} x_{v,i,d,j'} \;=\; \xi^{o,D}_{v,i,d}, \qquad \sum_{j'} x_{v,i,j',d} \;=\; \xi^{d,D}_{v,i,d} \qquad \forall\, d\in D,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 $$
 \sum_{d\in D}\xi^{o,D}_{v,i,d} + \sum_{t\in T}\xi^{o}_{v,i,t} \;=\; w_{v,i}, \qquad \sum_{d\in D}\xi^{d,D}_{v,i,d} + \sum_{t\in T}\xi^{d}_{v,i,t} \;=\; w_{v,i} \qquad \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 ($[p{=}1]$ above means the $\xi^o$ term only applies at slot 1 — slot 1 is the only slot that can ever be a route's start.) Every terminal visit-slot and every depot use has its arcs in and out balanced against whether it's used at all — except for whichever single node is the day's actual start (no arc in) and whichever single node is the day's actual end (no arc out). Exactly one start and one end is chosen per dispatched vehicle, and each can independently be a depot or a terminal.
 **Purpose:** builds the route as one continuous path with a well-defined start and end, while letting that start and end be a depot or a terminal, and letting them differ from each other.
 
 ### C11 — Terminal Eligibility
+
 $$
 \xi^{o}_{v,i,t} \;\leq\; E_t, \qquad \xi^{d}_{v,i,t} \;\leq\; E_t \qquad \forall\, t\in T,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 A terminal can only be used as a route's start or end if it's flagged eligible.
 **Purpose:** keeps certain terminals reserved for mid-route reloads only, never as a place a route begins or ends.
 
 ### C12 — Terminal Slot Ordering
+
 $$
 z_{v,i,(t,p)} \;\leq\; z_{v,i,(t,p-1)} \qquad \forall\, t\in T,\ p=2,\dots,P,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 A terminal's 2nd, 3rd, etc. visit-slot can't be used unless the one before it was used too.
 **Purpose:** stops the solver from representing one real visit in many meaninglessly different ways.
 
 ### C13 — Loading Gating
+
 $$
 Ql_{k,f,v,i,(t,p)} \;\leq\; M\cdot TF_{f,t}, \qquad Ql_{k,f,v,i,(t,p)} \;\leq\; M\cdot z_{v,i,(t,p)}, \qquad Ql_{k,f,v,i,(t,p)} \;\leq\; Qcap_{v,k}\cdot \delta_{f,k,v,i}
 $$
+
 $$
 \forall\, k\in K_v,\ f\in F,\ v\in V,\ i\in I_v,\ t\in T,\ p=1,\dots,P
 $$
+
 A vehicle can't load a fuel the terminal doesn't stock, can't load at a visit-slot it isn't actually using, and can't load a fuel into a compartment not assigned to carry it that day.
 **Purpose:** three independent checks that keep every loading event physically realistic.
 
 ### C14 — Subtour Elimination (MTZ)
+
 $$
 u_{v,i,j} - u_{v,i,j'} + |\mathcal N|\cdot x_{v,i,j,j'} \leq |\mathcal N|-1 \qquad \forall\, j\neq j' \in \mathcal N,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 Every customer and terminal visit-slot gets a position value; if an arc is used, the destination's value must be consistent with coming after the origin's.
 **Purpose:** prevents the solver from forming a closed loop of customers/terminal-slots that's disconnected from the rest of the route. Depots are excluded from this — they're always a route's boundary, never part of an internal loop.
 
 ### C15 — Time Windows
+
 $$
 EA_c - M\bigl(1-z_{v,i,c}\bigr) \;\leq\; TA_{v,i,c} \;\leq\; LA_c + M\bigl(1-z_{v,i,c}\bigr) \qquad \forall\, c\in C,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 $$
 EA_t - M\bigl(1-z_{v,i,(t,p)}\bigr) \;\leq\; TA_{v,i,(t,p)} \;\leq\; LA_t + M\bigl(1-z_{v,i,(t,p)}\bigr) \qquad \forall\, t\in T,\ p=1,\dots,P,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 Every visited node — customer or terminal slot — must be arrived at within that node's allowed time band.
 **Purpose:** keeps the route consistent with customer availability and terminal opening hours. A terminal's window only checks arrival, not how long the vehicle then stays.
 
 ### C16 — Arrival-Time Propagation
+
 $$
 \tau^v_{jj'} \;=\; \dfrac{Dist_{jj'}}{Sp_{v,jj'}} \qquad \forall\,(j,j')\in A,\ \forall\, v\in V
 $$
+
 $$
 s_{v,i,c} \;=\; \gamma\cdot\sum_{k\in K_v}\sum_{f\in F} q_{c,k,f,v,i} \qquad \forall\, c\in C,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 $$
 s_{v,i,(t,p)} \;=\; \beta\cdot\sum_{k\in K_v}\sum_{f\in F} Ql_{k,f,v,i,(t,p)} \qquad \forall\, t\in T,\ p=1,\dots,P,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 $$
 TA_{v,i,j'} \;\geq\; TA_{v,i,j} + \bar s_{v,i,j} + \tau^v_{jj'} - M\bigl(1-x_{v,i,jj'}\bigr) \qquad \forall\,(j,j')\in A,\ j,j'\in\mathcal N\cup D,\ \forall\, v\in V,\ \forall\, i\in I_v
 $$
+
 $$
 \text{where } \bar s_{v,i,j} = \begin{cases} s_{v,i,c} & j=c\in C \\ s_{v,i,(t,p)} & j=(t,p)\in\hat T \\ 0 & j=d\in D \end{cases}
 $$
+
 Arrival time at the next stop is whatever time the vehicle arrived at the current stop, plus however long it spends there, plus the travel time to get to the next one. How long it spends at a stop now depends on how much it loads or delivers there, not a flat number.
 **Purpose:** propagates a consistent clock along the whole route, accounting for speed that can vary by arc and dwell time that can vary by quantity handled.
 
 ### C17 — Maximum Daily Driving Duration (10 hours)
+
 $$
 TA_{v,i,n'} - TA_{v,i,n} - \bar s_{v,i,n} \;\leq\; T^{max} + M\bigl(2-\Xi^{o}_{v,i,n}-\Xi^{d}_{v,i,n'}\bigr)
 $$
+
 $$
 \forall\, n\in D\cup\{(t,1):t\in T\},\ \forall\, n'\in D\cup\hat T,\ \forall\, v\in V,\ \forall\, i\in I_v,\quad T^{max}=10\text{ hours}
 $$
+
 $$
 \text{where } \Xi^{o}_{v,i,n}=\xi^{o,D}_{v,i,n}\text{ if }n\in D,\ \xi^{o}_{v,i,t}\text{ if }n=(t,1);\qquad \Xi^{d}_{v,i,n'}=\xi^{d,D}_{v,i,n'}\text{ if }n'\in D,\ \xi^{d}_{v,i,(t,p)}\text{ if }n'=(t,p)
 $$
+
 The gap between the moment the vehicle actually leaves its start and the moment it actually arrives at its end can't exceed 10 hours.
 **Purpose:** caps how long a vehicle's day can run, regardless of whether that day started and ended at a depot, a terminal, or one of each.
 
 ### C18 — Fleet Size per Type
+
 $$
 N_v = \sum_{i\in I_v} w_{v,i} \leq m_v \qquad \forall\, v\in V
 $$
+
 The number of vehicles of a type actually used can't exceed how many of that type exist.
 **Purpose:** caps fleet usage at what's physically available.
 
 ### C19 — Variable Domains
+
 $$
 x_{v,i,jj'},\ z_{v,i,j},\ w_{v,i},\ \delta_{f,k,v,i},\ \xi^{o}_{v,i,t},\ \xi^{o,D}_{v,i,d},\ \xi^{d}_{v,i,(t,p)},\ \xi^{d,D}_{v,i,d} \in \{0,1\}
 $$
+
 $$
 Ql_{k,f,v,i,(t,p)},\ Lc_{k,f,v,i,j},\ s_{v,i,c},\ s_{v,i,(t,p)},\ q_{c,k,f,v,i},\ TA_{v,i,j} \geq 0
 $$
+
 States which variables are binary decisions and which are non-negative quantities.
 **Purpose:** keeps the model a clean Mixed-Integer Linear Program.
 
