@@ -2,7 +2,7 @@
 ### Heterogeneous Capacitated Vehicle Routing Problem
 #### Model Overview & Motivation
 
-*A Mixed-Integer Linear Programming Framework for Optimal Fuel Distribution Logistics*
+*A Mixed-Integer Non-Linear Programming Framework for Optimal Fuel Distribution Logistics*
 
 ---
 
