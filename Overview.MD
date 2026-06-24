@@ -21,7 +21,7 @@ Environmental and energy efficiency objectives are increasingly incorporated alo
 - A modest 5% improvement in route efficiency translates directly into significant annual savings.
 - Commercial planning systems such as AMCS Fuel Planner demonstrate that route optimisation software can reduce operational costs by 5–15%, increase delivered volume per driven kilometre by a similar margin, and cut planning time by 25–50%.
 
-At its structural core, this problem is a Multi-Pickup, Multi-Delivery Problem with a Heterogeneous Vehicle Fleet and Time Windows (MPDP-HF-TW). Each vehicle may visit multiple fuel terminals to load (pickups) and multiple customers to unload (deliveries), in any feasible interleaved order, using a fleet of trucks that differ in compartment count, compartment capacity, fuel compatibility, speed, and operating cost. This is among the most complex vehicle routing variants in the operations research literature. 
+  At its structural core, this problem is a Multi-Pickup, Multi-Delivery Problem with a Heterogeneous Vehicle Fleet and Time Windows (MPDP-HF-TW). Each    vehicle may visit multiple fuel terminals to load (pickups) and multiple customers to unload (deliveries), in any feasible interleaved order, using a    fleet of trucks that differ in compartment count, compartment capacity, fuel compatibility, speed, and operating cost. This is among the most complex    vehicle routing variants in the operations research literature. 
 ---
 
 ## 2. Problem Description
