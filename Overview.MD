@@ -10,26 +10,23 @@
 
 The distribution of liquid petroleum products — petrol, diesel, aviation fuel, and heating oil — represents one of the most logistically demanding sectors in modern supply chains. Unlike standard freight, fuel delivery imposes a unique convergence of physical constraints, safety regulations, multi-product complexity, and time-sensitive customer requirements that make generic routing models inadequate.
 
-Fuel distribution companies must simultaneously optimise across four deeply interlinked operational dimensions: transportation logistics, inventory management at supply terminals, supply chain coordination across the network, and fleet management across a heterogeneous vehicle pool. These functions cannot be optimised independently. For example, the quantity of a specific fuel demanded by a customer directly determines which vehicle is eligible to serve that customer — only a truck with a compatible compartment of sufficient capacity can fulfil the order. A routing decision is simultaneously a fleet assignment decision, a loading plan, and a schedule.
-
-> **Why Optimisation Matters in Fuel Distribution**
->
-> - In the petroleum distribution industry, transport activities typically account for between 40% and 60% of total operating costs.
-> - Fuel is a high-volume, low-margin business — even a 2% cost saving across thousands of daily deliveries is significant.
-> - A modest 5% improvement in route efficiency translates directly into significant annual savings.
-> - Commercial planning systems such as AMCS Fuel Planner demonstrate that route optimisation software can reduce operational costs by 5–15%, increase delivered volume per driven kilometre by a similar margin, and cut planning time by 25–50% (AMCS, 2023).
-
-Fuel distribution is further complicated by a set of operational constraints that are either absent or far less severe in generic logistics. Customers must be visited within strict time windows reflecting both customer availability and terminal operating hours. Supply terminals have depot offtake limits — the total volume that can be loaded per day is physically bounded by terminal capacity and throughput rates. Driver hours are regulated. Vehicle compartments carry strict fuel compatibility constraints — not every compartment can carry every fuel type, and cross-contamination between fuel grades is a safety and quality violation.
+Fuel distribution companies must simultaneously optimise across four deeply interlinked operational dimensions: transportation logistics, inventory management at supply terminals, supply chain coordination across the network, and fleet management across a heterogeneous vehicle pool. Fuel distribution is further complicated by a set of operational constraints. Customers and terminals must be visited within strict time windows reflecting customer availability and terminal operating hours respectfully. Driver hours are regulated. Vehicle compartments carry strict fuel compatibility constraints, not every compartment can carry every fuel type, and cross-contamination between fuel grades is a safety and quality violation.
 
 Environmental and energy efficiency objectives are increasingly incorporated alongside economic goals, reflecting sustainability priorities in the sector. Route length minimisation, fuel consumption reduction, and the matching of vehicle size to delivery volume all contribute to emissions reduction and regulatory compliance, adding a further dimension to the optimisation problem beyond pure cost.
 
-At its structural core, this problem is a Multi-Pickup, Multi-Delivery Problem with a Heterogeneous Vehicle Fleet and Time Windows (MPDP-HF-TW). Each vehicle may visit multiple fuel terminals to load (pickups) and multiple customers to unload (deliveries), in any feasible interleaved order, using a fleet of trucks that differ in compartment count, compartment capacity, fuel compatibility, speed, and operating cost. This is among the most complex vehicle routing variants in the operations research literature — NP-hard in the general case and practically intractable for large instances without sophisticated solution methods.
+**Why Optimisation Matters in Fuel Distribution**
 
+- In the petroleum distribution industry, transport activities typically account for between 40% and 60% of total operating costs.
+- Fuel is a high-volume, low-margin business, even a 2% cost saving across thousands of daily deliveries is significant. 
+- A modest 5% improvement in route efficiency translates directly into significant annual savings.
+- Commercial planning systems such as AMCS Fuel Planner demonstrate that route optimisation software can reduce operational costs by 5–15%, increase delivered volume per driven kilometre by a similar margin, and cut planning time by 25–50%.
+
+At its structural core, this problem is a Multi-Pickup, Multi-Delivery Problem with a Heterogeneous Vehicle Fleet and Time Windows (MPDP-HF-TW). Each vehicle may visit multiple fuel terminals to load (pickups) and multiple customers to unload (deliveries), in any feasible interleaved order, using a fleet of trucks that differ in compartment count, compartment capacity, fuel compatibility, speed, and operating cost. This is among the most complex vehicle routing variants in the operations research literature. 
 ---
 
 ## 2. Problem Description
 
-The HCVRP fuel distribution model addresses the daily operational planning problem faced by a petroleum distributor operating across a network of supply terminals, customer sites, and vehicle depots. The planning horizon is a single operational day. Each dispatched vehicle completes one route, departing from an origin node (a depot or terminal) and arriving at a destination node (a depot or eligible terminal), with any number of terminal reload stops and customer delivery stops interleaved along the way.
+This fuel distribution model addresses the daily operational planning problem faced by a petroleum distributor operating across a network of supply terminals, customer sites, and vehicle depots. The planning horizon is a single operational day. Each dispatched vehicle completes one route, departing from an origin node (a depot or terminal) and arriving at a destination node (a depot or eligible terminal), with any number of terminal reload stops and customer delivery stops interleaved along the way.
 
 ### 2.1 Network Structure
 
@@ -45,7 +42,7 @@ The distribution network consists of three distinct node types, each playing a d
 
 The fleet is heterogeneous — vehicles are grouped into types, and within each type all operational parameters are identical. Across types they differ in the number of compartments, per-compartment capacities, fuel compatibility of each compartment, maintenance cost per kilometre, fuel consumption cost per kilometre, driver cost rate, and arc-specific average speed. Each vehicle type has a fixed fleet size limiting the number of instances that can be dispatched in a day.
 
-Every vehicle carries multiple compartments. Each compartment is physically engineered to carry a subset of fuel types (a fixed technical parameter). Each day, a compartment is assigned at most one fuel type for the entire day — it cannot switch fuels mid-route. However, it may be topped up at a subsequent terminal stop with more of the same fuel. This compartment-level granularity is what allows a single tanker truck to simultaneously carry petrol, diesel, and aviation fuel in separate compartments on a single route, serving different customers with different products.
+Every vehicle carries multiple compartments. Each compartment is physically engineered to carry a subset of fuel types (a fixed technical parameter). IN this problem each day, a compartment is assigned at most one fuel type for the entire day, i.e it cannot switch fuels mid-route. However, it may be topped up at a subsequent terminal stop with more of the same fuel. This compartment-level granularity is what allows a single tanker truck to simultaneously carry petrol, diesel, and aviation fuel in separate compartments on a single route, serving different customers with different products.
 
 ### 2.3 The Core Optimisation Problem
 
