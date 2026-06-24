@@ -1,9 +1,4 @@
 # Heterogeneous Capacitated Vehicle Routing Problem (HCVRP)
-## Fuel Distribution Model — Quadratic Reformulation (Big-$M$ Removed Where Meaningful)
-
-> **Scope of this file.** This is a derivative of the original MILP formulation. Every big-$M$ constraint whose gating object is a *decision variable* has been replaced below by an exact, equivalent quadratic (bilinear) constraint that needs no $M$ at all. Exactly one big-$M$ constraint's gating object is a fixed *parameter* (not a decision variable) — there, no second decision variable exists to multiply against, so no meaningful quadratic substitute exists, and it is left in its original big-$M$ form. **No constraint that never used $M$ has been touched.** Net effect: the model moves from a pure MILP to a Mixed-Integer Quadratically-Constrained Program (MIQCP), with exactly one residual linear big-$M$ inequality.
-
----
 
 ## Big-$M$ → Quadratic Conversion Summary
 
@@ -18,44 +13,6 @@
 | C15 — time windows | $EA-M(1-z)\le TA\le LA+M(1-z)$ | $z(TA-EA)\ge0,\ z(LA-TA)\ge0$ | Yes |
 | C16 — arrival-time propagation | $TA_{j'}\ge TA_j+\bar s_j+\tau-M(1-x)$ | $x\,(TA_{j'}-TA_j-\bar s_j-\tau)\ge0$ | Yes |
 | C17 — duration cap | $TA_{n'}-TA_n-\bar s_n \le T^{max}+M(2-\Xi^o-\Xi^d)$ | new $y=\Xi^o\cdot\Xi^d$ via exact linear AND, then $y(TA_{n'}-TA_n-\bar s_n-T^{max})\le0$ | Yes |
-
----
-
-## Key Features
-
-| Feature | Detail |
-|---|---|
-| Heterogeneous fleet | Vehicles differ in compartment count, per-compartment capacities, cost rates (maintenance, fuel-consumption, driver), and arc-specific speed |
-| Multi-product, multi-compartment | Each compartment carries exactly one fuel type per day; mid-day top-up of the same fuel is allowed |
-| Flexible endpoints | Start and end nodes are independently chosen from depots or eligible terminals; they need not match |
-| Mid-route reloads | Any terminal may be visited multiple times within a day (visit-slots capped at $P$ per vehicle per terminal) |
-| Split delivery | A customer's demand for a fuel may be split across multiple vehicles and/or compartments |
-| Visit vs. load distinction | Binary $z_{v,i,(t,p)}$ records whether a terminal slot was visited; binary $\ell_{v,i,(t,p)}$ separately records whether fuel was actually loaded at that slot — a vehicle parked overnight at a terminal visits the slot but may not load |
-| Route-end no-loading | A vehicle whose route ends at a terminal cannot load fuel it will not deliver — enforced via the $\ell$ variable gating all loading quantities |
-| Terminal eligibility | Only terminals with $E_t = 1$ may serve as route start or end; any terminal may be used for mid-route reloads |
-| Compartment fuel-identity lock | Once a compartment is assigned a fuel for the day ($\delta_{f,k,v,i} = 1$), it cannot switch fuels; it may only be topped up with more of the same fuel |
-| Arrival time windows | Customer and terminal arrival windows are enforced via exact quadratic (bilinear) gating constraints; windows apply to every visited node including depots at route boundaries |
-| Arrival-time propagation | A consistent clock is maintained along the entire route, with travel time varying by vehicle type and arc, and dwell time varying by quantity handled |
-| Maximum daily duration | Total elapsed time from route start to route end is capped at $T^{max} = 10$ hours |
-| MTZ subtour elimination | Miller–Tucker–Zemlin constraints applied over the visit-slot replicated node set $\mathcal{N} = C \cup \hat{T}$, using an exact quadratic (bilinear) reformulation instead of big-$M$ |
-| No mid-route depot returns | Depots are strictly route boundaries — a vehicle cannot return to a depot as an intermediate stop |
-| Compartment running-load tracking | Continuous variable $Lc_{k,f,v,i,j}$ tracks fuel level in each compartment at every node, enabling partial deliveries and top-ups to be represented exactly |
-| Driver cost on travel time only | Driver pay covers moving time only (not dwell time), matching a typical per-hour-driven pay structure; this is a deliberate modeling choice that can be altered |
-| Terminal-stay fixed cost | An overnight stop at a terminal incurs a fixed fee $FT_t$; ending at a depot does not |
-| Fleet size enforcement | Number of vehicles dispatched per type cannot exceed the available physical fleet $m_v$ |
-| Quadratic (MIQCP) formulation | Big-$M$ indicator logic is replaced by exact bilinear (degree-2) constraints wherever the gating object is a decision variable; only one big-$M$ instance remains (C13's terminal fuel-stocking gate), since its gating object is a fixed parameter, not a decision variable |
-
----
-
-## Overview
-
-The **Heterogeneous Capacitated Vehicle Routing Problem (HCVRP)** is an operations research model used to optimize the routing of a fleet of vehicles with varying capacities and characteristics for fuel delivery. This document lays out the key features, notation, objective, and constraints that define the model.
-
----
-
-## Vehicle Types
-
-Each vehicle type $v$ carries its own: compartment set $K_v$ (so the *number* of compartments differs by type), per-compartment capacities $Qcap_{v,k}$, maintenance cost $Cm_v$, fuel-consumption cost $Cf_v$, driver cost rate $Cd_v$, speed $Sp_{v,j,j'}$ (per arc), and fleet size $m_v$.
 
 ---
 
