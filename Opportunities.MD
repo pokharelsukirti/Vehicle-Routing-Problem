@@ -1,10 +1,11 @@
-## OPtimization Opportunities
+## Optimization Opportunities
 
 The current model is deliberately scoped to a single operational day with deterministic demand. Several extensions — identified through comparison with related literature and operational requirements — are noted for future incorporation.
 
 ### Currently Modelled
 
 - Single-day planning horizon with full route optimisation
+- quadratic relationship between fuel consumption costs and weight of the truck
 - Heterogeneous multi-compartment fleet with fuel compatibility
 - Multi-terminal, multi-customer network with flexible endpoints
 - Split delivery, mid-route reloads, time windows, duration cap
