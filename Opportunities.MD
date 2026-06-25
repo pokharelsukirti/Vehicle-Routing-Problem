@@ -5,7 +5,6 @@ The current model is deliberately scoped to a single operational day with determ
 ### Currently Modelled
 
 - Single-day planning horizon with full route optimisation
-- quadratic relationship between fuel consumption costs and weight of the truck
 - Heterogeneous multi-compartment fleet with fuel compatibility
 - Multi-terminal, multi-customer network with flexible endpoints
 - Split delivery, mid-route reloads, time windows, duration cap
@@ -13,6 +12,7 @@ The current model is deliberately scoped to a single operational day with determ
 ### Not Yet Modelled (Future Work)
 
 - **Multi-day planning horizon:** demand served in batches over a week; vehicle state carries over between days
+- **Quadratic relationship between fuel consumption costs and weight of the truck
 - **Time-of-day speed variation:** morning, afternoon, and evening traffic conditions produce different arc travel times
 - **Dual capacity constraints:** simultaneous volume and weight limits per compartment (relevant when fuel density varies)
 - **Cross-contamination and compartment-adjacency safety rules:** certain fuel pairs may not be carried in adjacent compartments
