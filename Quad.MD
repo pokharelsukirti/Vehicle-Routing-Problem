@@ -264,67 +264,88 @@ A customer can only receive fuel if the vehicle actually visits them.
 
 ---
 
-### C9 — Flow Conservation: Customers
-
-For $j \in C$ (customer nodes), $j' \in C \cup \hat{T}$ ($j' \neq j$):
-
-$$
-\sum_{j' \in C \cup \hat{T}} x_{v,i,j,j'} = \sum_{j' \in C \cup \hat{T}} x_{v,i,j',j} = z_{v,i,j} \qquad \forall\ j \in C,\ v \in V,\ i \in I_v
-$$
-
-> $j' \in C \cup \hat{T}$: a vehicle leaving or arriving at a customer comes from/goes to another customer or a terminal visit-slot only — customers are never endpoints and the route cannot proceed to a depot from a customer mid-route.
-
-A visited customer has exactly one arc in and one arc out; an unvisited one has none.
-
-**Purpose:** makes sure the route passes cleanly through each customer it serves, with no dangling or duplicated stops.
-
-*(Unchanged — no $M$ in this constraint.)*
+### # C9 — Flow Conservation (All Node Types)
+Any $(j, j')$ combination not listed in any sub-case below does not belong to $A$ and carries no variable.
 
 ---
 
-### C10 — Flow Conservation: Terminal Slots and Depots
-
-**Terminal inflow** — for $(t,p) \in \hat{T}$, $j' \in C \cup \hat{T} \cup D$ (a terminal slot may be reached from a customer, another terminal slot, or a depot at route start):
+#### Case 1 — Customer nodes:
 
 $$
-\sum_{j' \in C \cup \hat{T} \cup D} x_{v,i,j',(t,p)} = z_{v,i,(t,p)} - \xi^{o}_{v,i,t} \cdot [p{=}1] \qquad \forall\ (t,p) \in \hat{T},\ v \in V,\ i \in I_v
+\sum_{j'} x_{v,i,j,j'}
+\;=\;
+\sum_{j'} x_{v,i,j',j}
+\;=\;
+z_{v,i,j}
+\qquad \forall\; j \in C,j' \in C \cup \hat{T}\; v \in V,\; i \in I_v
 $$
 
-**Terminal outflow** — for $(t,p) \in \hat{T}$, $j' \in C \cup \hat{T}$ only (a vehicle leaving a terminal never goes directly to a depot mid-route):
+A customer can be reached from a terminal and other customer and A visited customer has exactly one arc in and one arc out; an unvisited one has none.
+
+---
+
+#### Case 2 — Terminal visit-slot nodes: 
+
+##### Inflow
 
 $$
-\sum_{j' \in C \cup \hat{T}} x_{v,i,(t,p),j'} = z_{v,i,(t,p)} - \xi^{d}_{v,i,(t,p)} \qquad \forall\ (t,p) \in \hat{T},\ v \in V,\ i \in I_v
+\sum_{j'} x_{v,i,j',j}
+\;=\;
+z_{v,i,j} - \xi^{o}_{v,i,t} \cdot [p{=}1]
+\qquad \forall\; j=(t,p) \in \hat{T},\; j' \in C \cup \hat{T}\cup D, \; v \in V,\; i \in I_v
 $$
+A terminal slot may be reached from a customer, another terminal slot, or a depot at route start.
 
-**Depot outflow** — for $d \in D$, $j' \in \hat{T}$ only (a depot can only be a route's start, and the first move must be to a terminal to load before any delivery):
-
-$$
-\sum_{j' \in \hat{T}} x_{v,i,d,j'} = \xi^{o,D}_{v,i,d} \qquad \forall\ d \in D,\ v \in V,\ i \in I_v
-$$
-
-**Depot inflow** — for $d \in D$, $j' \in C \cup \hat{T}$ (a depot may only be reached from a customer or a terminal, never from another depot):
+##### Outflow
 
 $$
-\sum_{j' \in C \cup \hat{T}} x_{v,i,j',d} = \xi^{d,D}_{v,i,d} \qquad \forall\ d \in D,\ v \in V,\ i \in I_v
+\sum_{j'} x_{v,i,j,j'}
+\;=\;
+z_{v,i,j} - \xi^{d}_{v,i,(t,p)}
+\qquad \forall\; j=(t,p) \in \hat{T}, \; j' \in C \cup \hat{T}, \; v \in V,\; i \in I_v
 $$
 
-**Single origin and single destination per dispatched vehicle:**
+A vehicle leaving a terminal mid-route never goes directly to a depot
+> When a terminal slot is the route's final destination ($\xi^d_{v,i,(t,p)}=1$),
+> the vehicle is present ($z=1$) but no outbound arc exists, giving right-hand side $1 - 1 = 0$ and similarly no inbound arc exist for inflow.
+
+---
+
+#### Case 3 — Depot nodes:
+
+##### Outflow
 
 $$
-\sum_{d \in D} \xi^{o,D}_{v,i,d} + \sum_{t \in T} \xi^{o}_{v,i,t} = w_{v,i} \qquad \forall\ v \in V,\ i \in I_v
+\sum_{j'} x_{v,i,j,j'}
+\;=\;
+\xi^{o,D}_{v,i,j}
+\qquad \forall\; j \in D,\;j' \in \hat{T},\; v \in V,\; i \in I_v
+$$
+A depot is always a route's start; the vehicle's first move must be to a terminal to load before any delivery;no depot-to-customer or depot-to-depot arc exists.
+
+##### Inflow
+
+$$
+\sum_{j} x_{v,i,j',j}
+\;=\;
+\xi^{d,D}_{v,i,j}
+\qquad \forall\; j \in D,\; j' \in C \; v \in V,\; i \in I_v
+$$
+A depot may only be entered from a customer.
+
+---
+
+#### Single Origin and Single Destination per Dispatched Vehicle
+
+$$
+\sum_{d \in D} \xi^{o,D}_{v,i,d} + \sum_{t \in T} \xi^{o}_{v,i,t} = w_{v,i}
+\qquad \forall\; v \in V,\; i \in I_v
 $$
 
 $$
-\sum_{d \in D} \xi^{d,D}_{v,i,d} + \sum_{t \in T} \xi^{d}_{v,i,t} = w_{v,i} \qquad \forall\ v \in V,\ i \in I_v
+\sum_{d \in D} \xi^{d,D}_{v,i,d} + \sum_{t \in T} \xi^{d}_{v,i,t} = w_{v,i}
+\qquad \forall\; v \in V,\; i \in I_v
 $$
-
-> $[p{=}1]$: the $\xi^o$ term applies only at slot $p = 1$ — slot 1 is the only slot that can ever be a route's start.
-
-Every terminal visit-slot and every depot use has its arcs in and out balanced against whether it is used at all — except for whichever single node is the day's actual start (no arc in) and whichever single node is the day's actual end (no arc out). Exactly one start and one end is chosen per dispatched vehicle, and each can independently be a depot or a terminal.
-
-**Purpose:** builds the route as one continuous path with a well-defined start and end, while letting that start and end be a depot or a terminal, and letting them differ from each other. The explicit arc-domain restrictions ($j' \in C \cup \hat{T}$ for terminal outflow; $j' \in \hat{T}$ for depot outflow; $j' \in C \cup \hat{T}$ for depot inflow) make the structural infeasibilities — no terminal-to-depot mid-route arcs, no depot-to-depot arcs, no depot-to-customer arcs — explicit in the constraint domains rather than relying solely on $A$.
-
-*(Unchanged — no $M$ in this constraint.)*
 
 ---
 
