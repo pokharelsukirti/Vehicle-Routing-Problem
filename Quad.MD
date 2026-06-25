@@ -1,19 +1,5 @@
 # Heterogeneous Capacitated Vehicle Routing Problem (HCVRP)
 
-## Big-$M$ → Quadratic Conversion Summary
-
-| Constraint | Original big-$M$ mechanism | New mechanism | $M$ removed? |
-|---|---|---|---|
-| C4 — loading gate | $Ql \leq M\cdot\ell$ | $Ql\cdot(1-\ell)=0$ | Yes |
-| C4 — $Lc$ propagation | $Lc_{j'} \geq Lc_j+\Theta_{j'}-M(1-x)$ | $x\,(Lc_{j'}-Lc_j-\Theta_{j'})\ge0$ | Yes |
-| C8 — visit–delivery link | $q \leq M\cdot z$ | $q\cdot(1-z)=0$ | Yes |
-| C13 — terminal-stocking gate | $Ql \leq M\cdot TF_{f,t}$ | **unchanged** — $TF_{f,t}$ is a fixed parameter, not a decision variable | **No (kept)** |
-| C13 — visit gate | $Ql \leq M\cdot z$ | $Ql\cdot(1-z)=0$ | Yes |
-| C14 — MTZ subtour elimination | $u_j-u_{j'}+Mx\le M-1$ | $x\,(u_{j'}-u_j-1)\ge0$ | Yes |
-| C15 — time windows | $EA-M(1-z)\le TA\le LA+M(1-z)$ | $z(TA-EA)\ge0,\ z(LA-TA)\ge0$ | Yes |
-| C16 — arrival-time propagation | $TA_{j'}\ge TA_j+\bar s_j+\tau-M(1-x)$ | $x\,(TA_{j'}-TA_j-\bar s_j-\tau)\ge0$ | Yes |
-| C17 — duration cap | $TA_{n'}-TA_n-\bar s_n \le T^{max}+M(2-\Xi^o-\Xi^d)$ | new $y=\Xi^o\cdot\Xi^d$ via exact linear AND, then $y(TA_{n'}-TA_n-\bar s_n-T^{max})\le0$ | Yes |
-
 ---
 
 # Notation
