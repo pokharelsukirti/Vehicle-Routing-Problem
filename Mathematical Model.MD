@@ -232,7 +232,7 @@ $$\sum_{d \in D} \xi^{o,D}_{v,i,d} + \sum_{t \in T} \xi^{o}_{v,i,t} = w_{v,i}, \
 | From $j$ | To $j'$ |
 |----------|---------|
 | $C$ | $C \cup \hat{T} \cup D$ |
-| $\hat{T}$ | $C \cup \hat{T} \cup D$ |
+| $\hat{T}$ | $C \cup \hat{T} |
 | $D$ | $\hat{T}$ |
 
 **Purpose.** Builds the route as a single continuous path with one start and one end. A depot is reachable only as the very last arc out of whichever node — customer or terminal slot — is visited last; it is never a mid-route stop, and every customer or terminal slot has at most one outbound arc, whether that arc continues the route or ends it at a depot. C13's subtour elimination operates on whatever arcs $A$ contains and requires no further arc-type exclusions (self-loops are in any case forced to zero by C13 itself, since $j'=j$ makes its right-hand side strictly negative).
