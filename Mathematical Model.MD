@@ -339,6 +339,7 @@ $y_{v,i,n,n'}$ is declared continuous and non-negative; its three defining inequ
 ## 4. Model Classification
 
 The model is a Mixed-Integer Quadratically-Constrained Program (MIQCP). Every nonlinear term is a bilinear product of a binary variable and a continuous variable (or, for the AND-linearization in C16, of two binaries): the loading gate ( $Ql\cdot(1-\delta)$ ), the $Lc$ propagation ( $x\cdot(Lc_{j'}-Lc_j-\Theta_{j'})$ ), the visit–delivery link ( $q\cdot(1-z)$ ), the visit gate in C12 ( $Ql\cdot(1-z)$ ), MTZ ( $x\cdot(u_{j'}-u_j-1)$ ), time windows ( $z\cdot(TA-EA)$ and $z\cdot(LA-TA)$ ), arrival-time propagation ( $x\cdot(TA_{j'}-TA_j-\bar{s}-\tau)$ ), and the duration gate ( $y\cdot(TA_{n'}-TA_n-\bar{s}-T^{max})$ ). Each is linear in either factor when the other is held fixed, so these are exact reformulations of logical implications, not approximations. The one exception is C12's terminal-stocking gate, $Ql \le M\cdot TF_{f,t}$ : since $TF_{f,t}$ is a fixed parameter, the term is linear to begin with and no bilinear product — and hence no reformulation — is needed there.
+
 ---
 
 ## 5. Modeling Notes
