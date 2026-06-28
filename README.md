@@ -4,6 +4,8 @@
 
 *A Mixed-Integer Quadratically Constrained Programming Framework for Optimal Fuel Distribution Logistics*
 
+*Warning:* This repository is a work in progress. The model is in active development, and you may encounter inaccuracies as I work towards an improved system.
+
 ---
 
 ## 1. Industry Context and Motivation
