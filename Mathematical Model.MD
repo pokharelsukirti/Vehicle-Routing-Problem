@@ -153,7 +153,7 @@ Loading at a visit-slot is gated by the slot-level indicator $\delta_{f,k,v,i,(t
 
 $$Ql_{k,f,v,i,(t,p)} \cdot \bigl(1 - \delta_{f,k,v,i,(t,p)}\bigr) = 0 \qquad \forall\ k \in K_v,\ f \in F,\ v \in V,\ i \in I_v,\ t \in T,\ p = 1,\dots,P$$
 
-Loading is further blocked at slots the vehicle does not visit, and at the route's final destination terminal:
+Loading is further blocked at the route's start and final destination terminal:
 
 $$\qquad \delta_{f,k,v,i,(t,p)} \leq 1 - \xi^{o}_{v,i,(t,1)} \qquad \forall\ k,f,v,i,t $$
 $$\qquad \delta_{f,k,v,i,(t,p)} \leq 1 - \xi^{d}_{v,i,(t,p)} \qquad \forall\ k,f,v,i,t,p$$
