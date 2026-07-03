@@ -164,13 +164,13 @@ $$x_{v,i,j,j'}\Bigl(Lc_{k,f,v,i,j'} - Lc_{k,f,v,i,j} - \Theta_{k,f,v,i,j'}\Bigr)
 
 where
 
-$$\Theta_{k,f,v,i,j'} = \begin{cases} Ql_{k,f,v,i,(t,p)} if j' = (t,p) \in \hat{T} \\,
-                                    -q_{c,k,f,v,i} if j' = c \in C \\ 
-                                     0 if j' = d \in D \end{cases}$$
+$$\Theta_{k,f,v,i,j'} = \begin{cases} Ql_{k,f,v,i,(t,p)}  if  j' = (t,p) \in \hat{T} \\
+                                    -q_{c,k,f,v,i}  if  j' = c \in C \\ 
+                                     0  if  j' = d \in D \end{cases}$$
 
 and the depot anchor:
 
-$$Lc_{k,f,v,i,d} = 0 \qquad \forall\ d \in D,\ k \in K_v,\ f \in F,\ v \in V,\ i \in I_v$$
+$$Lc_{k,f,v,i,j} = 0 if j in D \qquad \forall\ d \in D,\ k \in K_v,\ f \in F,\ v \in V,\ i \in I_v$$
 
 **Purpose.** Tracks the physical contents of each compartment along the route. When an arc is active, the running load rises by exactly the fuel loaded at a terminal, falls by exactly the fuel delivered to a customer, and resets to zero at any depot; when the arc is inactive the equation is vacuous ($0=0$). The propagation is written as an *equality*, not a one-sided bound: combined with the depot anchor and the nonnegativity of $Lc$ in C5, this is what stops a vehicle from delivering more fuel than is actually on board — if a requested delivery $q$ exceeded the content $Lc$ carried into that customer, the equality would force the post-delivery $Lc$ negative, violating C5. A one-sided ($\ge$) version of this gate would not catch that: $Lc$ could simply be set to its floor of zero regardless of how much was over-delivered, and the day-level total in C7 would not detect the sequencing violation either. Loading itself is permitted only when $\delta_{f,k,v,i,(t,p)} = 1$, which is itself suppressed at unvisited slots and at the route's overnight terminal end.
 
