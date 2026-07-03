@@ -155,7 +155,8 @@ $$Ql_{k,f,v,i,(t,p)} \cdot \bigl(1 - \delta_{f,k,v,i,(t,p)}\bigr) = 0 \qquad \fo
 
 Loading is further blocked at slots the vehicle does not visit, and at the route's final destination terminal:
 
-$$\delta_{f,k,v,i,(t,p)} \leq z_{v,i,(t,p)}, \qquad \delta_{f,k,v,i,(t,p)} \leq 1 - \xi^{d}_{v,i,(t,p)} \qquad \forall\ k,f,v,i,t,p$$
+unnecessary I think check later : $$\delta_{f,k,v,i,(t,p)} \leq z_{v,i,(t,p)}, 
+\qquad \delta_{f,k,v,i,(t,p)} \leq 1 - \xi^{d}_{v,i,(t,p)} \qquad \forall\ k,f,v,i,t,p$$
 
 The cumulative running load evolves *exactly* along the route:
 
@@ -163,7 +164,9 @@ $$x_{v,i,j,j'}\Bigl(Lc_{k,f,v,i,j'} - Lc_{k,f,v,i,j} - \Theta_{k,f,v,i,j'}\Bigr)
 
 where
 
-$$\Theta_{k,f,v,i,j'} = \begin{cases} Ql_{k,f,v,i,(t,p)} & j' = (t,p) \in \hat{T} \\ -q_{c,k,f,v,i} & j' = c \in C \\ 0 & j' = d \in D \end{cases}$$
+$$\Theta_{k,f,v,i,j'} = \begin{cases} Ql_{k,f,v,i,(t,p)} if j' = (t,p) \in \hat{T} \\,
+                                    -q_{c,k,f,v,i} if j' = c \in C \\ 
+                                     0 if j' = d \in D \end{cases}$$
 
 and the depot anchor:
 
