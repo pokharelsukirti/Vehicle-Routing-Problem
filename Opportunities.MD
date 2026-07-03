@@ -11,10 +11,12 @@ The current model is deliberately scoped to a single operational day with determ
 
 ### Not Yet Modelled (Future Work)
 
-- **Multi-day planning horizon:** demand served in batches over a week; vehicle state carries over between days
+- **Multi-day planning horizon:** demand served in batches over a week; and priority based routing
 - **Quadratic relationship:** explore fuel consumption cost as a quadratic function of weight of the truck
 - **Time-of-day speed variation:** morning, afternoon, and evening traffic conditions produce different arc travel times
 - **Dual capacity constraints:** simultaneous volume and weight limits per compartment (relevant when fuel density varies)
+- **Soft Constraint:** introduce soft constraint for time windows, i.e penalties for late deliveries
+- **Multiple Objective:** instead of a single cost objective, explore the possibilities for a multiple objective
 - **Cross-contamination and compartment-adjacency safety rules:** certain fuel pairs may not be carried in adjacent compartments
 
 > **Priority **
