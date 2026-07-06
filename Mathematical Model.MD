@@ -287,11 +287,11 @@ Propagation along the route, using the travel time $\tau^v_{j,j'}$ defined in Se
 $$x_{v,i,j,j'}\Bigl(TA_{v,i,j'} - TA_{v,i,j} - \bar{s}_{v,i,j} - \tau^v_{j,j'}\Bigr) \geq 0 \qquad \forall\ (j,j') \in A,\ v \in V,\ i \in I_v$$
 
 where
-\bar{s}_{v,i,j} = \begin{cases} 
+$$\bar{s}_{v,i,j} = \begin{cases} 
 s_{v,i,c} & j = c \in C, \\ 
 s_{v,i,(t,p)} & j = (t,p) \in \hat{T}, \\ 
 0 & j = d \in D 
-\end{cases}
+\end{cases}$$
 
 with $s_{v,i,c}$ and $s_{v,i,(t,p)}$ as defined in Section 1.4.
 
