@@ -300,8 +300,8 @@ with $s_{v,i,c}$ and $s_{v,i,(t,p)}$ as defined in Section 1.4.
 
 **Day-start grounding.** $TA_{v,i,n^{\text{start}}}$ — the arrival time at the route's first node — is the dispatch time, the moment from which the route clock runs:
 
-* **Depot origin** ($\xi^{o,D}_{v,i,d}=1$): $TA_{v,i,d} \geq 0$ from the variable domain. The depot carries no time window. Propagation fires on the single outbound arc $d \to (t,1)$, establishing $TA_{v,i,(t,1)} \geq TA_{v,i,d} + \tau^v_{d,(t,1)}$; the terminal's own window in C14 then bounds $TA_{v,i,(t,1)}$ from above.
-* **Terminal origin** ($$ \xi^{o}_{v,i,t}=1 $$): $$ z_{v,i,(t,1)}=1 $$ activates C14's window sandwich directly, bounding $$TA_{v,i,(t,1)} \in [EA_{(t,1)}, LA_{(t,1)}]$$. Propagation then fires on the first outbound arc from $$(t,1)$$.
+* **Depot origin** ($xi^{o,D}_{v,i,d}=1$): $TA_{v,i,d} \geq 0$ from the variable domain. The depot carries no time window. Propagation fires on the single outbound arc $d \to (t,1)$, establishing $TA_{v,i,(t,1)} \geq TA_{v,i,d} + \tau^v_{d,(t,1)}$; the terminal's own window in C14 then bounds $TA_{v,i,(t,1)}$ from above.
+* **Terminal origin** ($$xi^{o}_{v,i,t}=1 $$): $$ z_{v,i,(t,1)}=1 $$ activates C14's window sandwich directly, bounding $$TA_{v,i,(t,1)} \in [EA_{(t,1)}, LA_{(t,1)}]$$. Propagation then fires on the first outbound arc from $$(t,1)$$.
 
 In both cases the dispatch time is the arrival time at the start node itself; no separate variable is needed.
 
