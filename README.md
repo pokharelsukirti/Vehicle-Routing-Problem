@@ -6,7 +6,7 @@
 
 *Warning:* This repository is a work in progress. The model is in active development, and you may encounter inaccuracies as I work towards an improved system.
 
-For further changes to the system checkout: Redesign [Redesign.MD] 
+For further changes to the system checkout: [Redesign](https://github.com/pokharelsukirti/Vehicle-Routing-Problem/blob/main/Redesign.MD)
 
 ---
 
