@@ -6,6 +6,8 @@
 
 *Warning:* This repository is a work in progress. The model is in active development, and you may encounter inaccuracies as I work towards an improved system.
 
+For further changes to the system checkout: Redesign [Redesign.MD] 
+
 ---
 
 ## 1. Industry Context and Motivation
